@@ -1,18 +1,12 @@
 #!/bin/bash
 
-# Скрипт установки Koda CLI на SteamOS/Arch Linux
-# + Создание ярлыка "Konsole Koda" на рабочий стол
+# Старт установки
+FORCE_RUN=1
+export PATH="$HOME/.npm-global/bin:$PATH"
 
-# Если передан флаг --run, выполняем установку
-# Иначе открываем Konsole
-if [ "$1" != "--run" ]; then
-    konsole --noclose -e "$0 --run" || {
-        echo "Ошибка: Konsole не установлен или недоступен"
-        echo "Запустите вручную: $0 --run"
-        exit 1
-    }
-    exit 0
-fi
+set -e  # Выход при любой ошибке
+
+echo "=== Установка Koda CLI + ярлык ==="
 
 set -e  # Выход при любой ошибке
 
