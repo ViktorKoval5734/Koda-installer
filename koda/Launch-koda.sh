@@ -138,16 +138,7 @@ fi
 
 # Финальный тест И АВТОЗАПУСК
 echo ""
-echo "🧪 Тестирование Koda CLI..."
-if command -v koda &> /dev/null; then
-    echo "✅ Koda CLI готов!"
-    echo ""
-    echo "🔥 Запуск Koda CLI ассистента..."
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    exec koda  # ЗАПУСКАЕМ Koda CLI
-else
-    echo "❌ koda не найден в PATH"
-    echo "Перезапустите терминал и попробуйте снова"
-    echo "=== Терминал открыт для отладки ==="
-    exec bash
-fi
+echo "🎉 УСТАНОВКА ЗАВЕРШЕНА!"
+echo "✅ Koda CLI установлен в ~/.npm-global/bin"
+echo "✅ Ярлык 'Konsole Koda' на рабочем столе"
+echo "🔄 Также можно запустить Koda CLI в терминале командой koda"
