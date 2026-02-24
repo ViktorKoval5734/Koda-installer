@@ -4,11 +4,7 @@
 FORCE_RUN=1
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-set -e  # Выход при любой ошибке
-
-echo "=== Установка Koda CLI + ярлык ==="
-
-set -e  # Выход при любой ошибке
+set -e
 
 echo "=== Установка Koda CLI + ярлык ==="
 
@@ -24,6 +20,14 @@ if [ -f /etc/os-release ]; then
     fi
 else
     echo "⚠️ Не удалось определить ОС"
+fi
+
+# Определение устройства
+DEVICE_NAME="unknown"
+if [ -f /sys/devices/virtual/dmi/id/product_name ]; then
+    DEVICE_NAME=$(cat /sys/devices/virtual/dmi/id/product_name)
+elif [ -f /sys/class/dmi/id/product_name ]; then
+    DEVICE_NAME=$(cat /sys/class/dmi/id/product_name)
 fi
 
 # Отключение read-only на SteamOS
@@ -60,6 +64,7 @@ install_if_needed nodejs
 install_if_needed npm
 install_if_needed git
 install_if_needed base-devel
+install_if_needed qrencode
 
 # Проверка версии Node.js
 NODE_MAJOR=$(node -e "console.log(process.versions.node.split('.')[0])" 2>/dev/null || echo "0")
@@ -114,11 +119,38 @@ Categories=Development;Utility;
 StartupNotify=true
 EOF
 
-# Делаем ярлык исполняемым и видимым
 chmod +x "$KODA_DESKTOP"
 xdg-desktop-icon activate "$KODA_DESKTOP" 2>/dev/null || true
 
 echo "✅ Ярлык 'Konsole Koda' создан на рабочем столе!"
+
+# ✅ СОЗДАНИЕ KODA.MD
+echo "📝 Создание контекста Koda..."
+mkdir -p ~/.kodacli
+
+cat > ~/.kodacli/KODA.md << EOF
+## Koda Added Memories
+
+### Технические настройки
+- При выполнении команд, требующих пароль sudo, выполнять команду через pkexec вместо sudo
+- Пояснять пользователю свои действия и кратко описывать что делают те или иные выполняемые в настоящий момент команды
+-
+EOF
+
+echo "✅ Файл контекста создан"
+
+# ✅ НАСТРОЙКА МОДЕЛИ
+echo "🎯 Настройка модели koda-base..."
+mkdir -p ~/.kodacli
+cat > ~/.kodacli/settings.json << 'EOF'
+{
+  "selectedAuthType": "koda-auth",
+  "hideTips": true,
+  "model": "koda-base"
+}
+EOF
+
+echo "✅ Модель koda-base установлена"
 
 # Предупреждение для SteamOS
 if [ "$IS_STEAMOS" = true ]; then
@@ -136,9 +168,23 @@ if [ "$IS_STEAMOS" = true ]; then
     fi
 fi
 
-# Финальный тест И АВТОЗАПУСК
+# ✅ ОЧИСТКА ЭКРАНА И QR-КОД
+clear
+echo "
+ █████   ████    ███████    ██████████     █████████
+▒▒███   ███▒   ███▒▒▒▒▒███ ▒▒███▒▒▒▒███   ███▒▒▒▒▒███
+ ▒███  ███    ███     ▒▒███ ▒███   ▒▒███ ▒███    ▒███
+ ▒███████    ▒███      ▒███ ▒███    ▒███ ▒███████████
+ ▒███▒▒███   ▒███      ▒███ ▒███    ▒███ ▒███▒▒▒▒▒███
+ ▒███ ▒▒███  ▒▒███     ███  ▒███    ███  ▒███    ▒███
+ █████ ▒▒████ ▒▒▒███████▒   ██████████   █████   █████
+▒▒▒▒▒   ▒▒▒▒    ▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒   ▒▒▒▒▒ "
 echo ""
-echo "🎉 УСТАНОВКА ЗАВЕРШЕНА!"
-echo "✅ Koda CLI установлен в ~/.npm-global/bin"
-echo "✅ Ярлык 'Konsole Koda' на рабочем столе"
-echo "🔄 Также можно запустить Koda CLI в терминале командой koda"
+echo "🔄 Запустить Koda CLI можно с ярлыка на рабочем столе или командой: koda"
+echo ""
+
+qrencode -t utf8 "https://finance.ozon.ru/apps/sbp/ozonbankpay/019c8fe5-19dd-77a3-80c4-bb3ed668c0b2"
+
+echo ""
+echo "🙏 Пожалуйста поддержите автора по qr-коду выше"
+echo ""
