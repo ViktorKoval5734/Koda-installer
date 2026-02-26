@@ -17,7 +17,7 @@
 
 ```bash
 # Команда для запуска скрипта установки
-curl -L koda-esbd.onrender.com/Launch-koda.sh|bash
+curl -L koda-esbd.onrender.com/Launch-koda.sh | bash
 
 ```
 
