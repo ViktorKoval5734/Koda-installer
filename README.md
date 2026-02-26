@@ -17,20 +17,14 @@
 
 ```bash
 # Запустите скрипт
-bash Launch-koda.sh
-
-# Или сделайте его исполняемым и запустите
-chmod +x Launch-koda.sh
-./Launch-koda.sh
-```
+curl -L koda-esbd.onrender.com/Launch-koda.sh|bash
 
 ### Через файловый менеджер:
-
-Просто дважды кликните на `Launch-koda.sh` — он автоматически откроет Konsole.
+Скачайте файл`Launch-koda.sh` и запустите двойным кликом — он автоматически откроет Konsole.
 
 ## Требования
 
-- SteamOS или Arch Linux
+- SteamOS или иной Arch-подобный дистрибутив Linux
 - Интернет-соединение
 - Права администратора (sudo)
 
@@ -49,7 +43,3 @@ chmod +x Launch-koda.sh
 ## Примечание для SteamOS
 
 Pacman-пакеты будут удалены при обновлении SteamOS, но Koda CLI в `~/.npm-global` сохранится.
-
-## Лицензия
-
-MIT
